@@ -77,7 +77,7 @@ echo -en "\n${_p} Digite o número da partição${_o} ${_g}HOME${_o} ou tecle ${
 
 _root="/dev/${_disk}${_root}"; export _root
 [ -n "$_uefi" ] && { _uefi="/dev/${_disk}${_uefi}"; export _uefi; }
-[ -n "$_uefi" ] && { _boot="/dev/${_disk}${_boot}"; export _boot; }
+[ -n "$_boot" ] && { _boot="/dev/${_disk}${_boot}"; export _boot; }
 [ -n "$_swap" ] && { _swap="/dev/${_disk}${_swap}"; export _swap; }
 [ -n "$_home" ] && { _home="/dev/${_disk}${_home}"; export _home; }
 
@@ -105,13 +105,13 @@ STI
 echo -e " Suas partições definidas foram:\n"
 
 if [[ "$_uefi" != "" ]]; then
-	echo -e " ${_g}UEFI${_o}  = $_uefi"
+	echo -e " ${_g}UEFI${_o} = $_uefi"
 else
 	echo -e " ${_g}UEFI${_o} = SEM UEFI"
 fi
 
 if [[ "$_boot" != "" ]]; then
-	echo -e " ${_g}BOOT${_o}  = $_boot"
+	echo -e " ${_g}BOOT${_o} = $_boot"
 else
 	echo -e " ${_g}BOOT${_o} = SEM BOOT"
 fi
