@@ -69,6 +69,7 @@ echo "==========================================================="
 echo -e "\n${_n} CONSULTE ACIMA O NÚMERO DAS SUAS PARTIÇÕES${_o}"
 
 echo -en "\n ${_p}Digite o número da partição${_o} ${_g}UEFI${_o} ou tecle ${_am}ENTER${_o} caso não tenha:${_w} "; read _uefi
+echo -en "\n ${_p}Digite o número da partição${_o} ${_g}BOOT${_o} ou tecle ${_am}ENTER${_o} caso não tenha:${_w} "; read _boot
 echo -en "\n ${_p}Digite o número da partição${_o} ${_g}SWAP${_o} ou tecle ${_am}ENTER${_o} caso não tenha:${_w} "; read _swap
 echo -en "\n ${_p}Digite o número da partição${_o} ${_g}RAÍZ /${_o}${_am} (Partição OBRIGATÓRIA!)${_o}:${_w} "		 ; read  _root
 [ "$_root" == "" ] && { echo -e "\n${_am}Atenção:${_o} ${_p}Partição RAÍZ é obrigatória! Execute novamente o script e digite o número correto!\n${_o}"; exit 1; }
@@ -76,6 +77,7 @@ echo -en "\n${_p} Digite o número da partição${_o} ${_g}HOME${_o} ou tecle ${
 
 _root="/dev/${_disk}${_root}"; export _root
 [ -n "$_uefi" ] && { _uefi="/dev/${_disk}${_uefi}"; export _uefi; }
+[ -n "$_uefi" ] && { _boot="/dev/${_disk}${_boot}"; export _boot; }
 [ -n "$_swap" ] && { _swap="/dev/${_disk}${_swap}"; export _swap; }
 [ -n "$_home" ] && { _home="/dev/${_disk}${_home}"; export _home; }
 
@@ -106,6 +108,12 @@ if [[ "$_uefi" != "" ]]; then
 	echo -e " ${_g}UEFI${_o}  = $_uefi"
 else
 	echo -e " ${_g}UEFI${_o} = SEM UEFI"
+fi
+
+if [[ "$_boot" != "" ]]; then
+	echo -e " ${_g}BOOT${_o}  = $_boot"
+else
+	echo -e " ${_g}BOOT${_o} = SEM BOOT"
 fi
 
 if [[ "$_swap" != "" ]]; then
@@ -173,6 +181,11 @@ fi
 if [[ "$_uefi" != "" ]]; then
 	echo -e "${_g}Formatando, Criando e Montando EFI${_o}"; sleep 1
 	mkfs.vfat -F32 $_uefi && mkdir /mnt/boot && mount $_uefi /mnt/boot
+fi
+
+if [[ "$_boot" != "" ]]; then
+	echo -e "${_g}==> Formatando, Criando e Montando BOOT${_o}"; sleep 1
+	mkfs.ext4 -F $_boot && mkdir /mnt/boot && mount $_boot /mnt/boot
 fi
 
 # set morrorlist br (opcional)
